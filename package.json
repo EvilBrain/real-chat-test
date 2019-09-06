@@ -9,7 +9,7 @@
     "materialize-css": "^1.0.0-alpha.4",
     "socket.io": "~2.0.4"
   },
-  "start": {
-    "node index"
+  "scripts": {
+    "start": "node index.js"
   }
 }
