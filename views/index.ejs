@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Real Chat Online</title>
+
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="/materialize-css/dist/css/materialize.min.css"  media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col s6 m6 offset-s3">
+          <h1>Real Chat Online</h1>
+        </div>
+        <div class="col s12 m6 l3">
+          <h4>SALUT ! Envoyez un message pour commencer</h4>
+        </div>
+        <div class="col s6 offset-s3">
+          <div class="">
+            <form class="" action="/" method="post" id="chat_form">
+              <input size="50" type="text" name="message" id="message" placeholder="Your message here..." autofocus>
+              <input type="submit" id="send_message" value="Send">
+            </form>
+          </div>
+
+          <section class="" id="all_chats">
+
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script >
+        // signing in to socket.io
+        var socket = io.connect('http://localhost:1337');
+
+        // We ask for the nickname, we send it to the server and we display it in the title
+        var username = prompt('Your username first :');
+        socket.emit('new_user', username);
+        document.title = username + '-' + document.title;
+
+        // When we receive a message, we insert it in the page
+        socket.on('message', function(data){
+            insertMessage(data.username, data.message);
+        })
+
+        // When a new user connects, the information is displayed
+        socket.on('new_user', function(username){
+          $('#all_chats').prepend('<p><em>' + username + ' joined the chat!</em></p>');
+        })
+
+        // When sending the form, we send the message and display it on the page
+        $('#chat_form').submit(function () {
+
+            var message = $('#message').val();
+            socket.emit('message', message); // Send the message to others
+            insertMessage(username, message); // Display the message also on our page
+            $('#message').val('').focus(); // Empty the Chat area and put the focus back on
+
+            return false; // Allows you to block the "classic" sending of the form
+
+        });
+
+        // Add a message to the page
+        function insertMessage(username, message) {
+            $('#all_chats').prepend('<p><strong>' + username + '</strong> ' + message + '</p>');
+        }
+    </script>
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="/materialize-css/dist/js/materialize.min.js"></script>
+  </body>
+</html>

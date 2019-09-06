@@ -1,0 +1,12 @@
+{
+  "name": "real-time-chat",
+  "version": "0.1.0",
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "ejs": "~2.5.7",
+    "ent": "~2.2.0",
+    "express": "~4.16.2",
+    "materialize-css": "^1.0.0-alpha.4",
+    "socket.io": "~2.0.4"
+  }
+}
